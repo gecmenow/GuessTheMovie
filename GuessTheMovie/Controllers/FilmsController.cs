@@ -15,7 +15,7 @@ namespace GuessTheMovie.Controllers
     {
 
         [System.Web.Http.HttpGet]
-        public async Task<ActionResult<List<PoolVM>>> Get()
+        public async Task<IEnumerable<PoolVM>> Get()
         {
             //async
             var data = await Films.GetPool();
