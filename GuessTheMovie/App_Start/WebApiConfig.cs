@@ -12,6 +12,9 @@ namespace GuessTheMovie
         {
             // Конфигурация и службы веб-API
 
+            // Добавляем поддержку CORS
+            config.EnableCors();
+
             // Маршруты веб-API
             config.MapHttpAttributeRoutes();
 
@@ -21,8 +24,10 @@ namespace GuessTheMovie
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            config.Formatters.JsonFormatter.SupportedMediaTypes
-            .Add(new MediaTypeHeaderValue("text/html"));
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
+
+            //config.Formatters.JsonFormatter.SupportedMediaTypes
+            //.Add(new MediaTypeHeaderValue("text/html"));
         }
     }
 }
