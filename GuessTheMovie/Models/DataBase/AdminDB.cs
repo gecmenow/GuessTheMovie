@@ -8,7 +8,8 @@ namespace GuessTheMovie.Models.DataBase
     public class AdminDB
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public int AdminCode { get; set; }
+        public string Login { get; set; }
         public string Password { get; set; }
     }
 }
