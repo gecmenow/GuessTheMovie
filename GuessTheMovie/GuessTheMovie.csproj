@@ -292,7 +292,12 @@
     <Compile Include="Migrations\202002072100444_added db.designer.cs">
       <DependentUpon>202002072100444_added db.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002081903160_admin db.cs" />
+    <Compile Include="Migrations\202002081903160_admin db.designer.cs">
+      <DependentUpon>202002081903160_admin db.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\DataBase\AdminDB.cs" />
     <Compile Include="Models\DataBase\DataBaseContext.cs" />
     <Compile Include="Models\DataBase\FilmsDB.cs" />
     <Compile Include="Models\Films\Films.cs" />
@@ -388,6 +393,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202002072100444_added db.resx">
       <DependentUpon>202002072100444_added db.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002081903160_admin db.resx">
+      <DependentUpon>202002081903160_admin db.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
