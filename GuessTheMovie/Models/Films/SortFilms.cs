@@ -24,6 +24,9 @@ namespace GuessTheMovie.Models.Films
 
                 index = r.Next(moviesCount);
 
+                if (watched.Count == data.Count())
+                    watched.Clear();
+
                 if (watched.Count() > 0)
                 {
                     if (!watched.Contains(data[index].FilmCode))

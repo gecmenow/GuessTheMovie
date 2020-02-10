@@ -7,6 +7,7 @@ namespace GuessTheMovie.Models.ViewModels
 {
     public class FilmsVM
     {
+        public int FilmId { get; set; }
         public string FilmCode { get; set; }
         public string Name { get; set; }
         public int Year { get; set; }

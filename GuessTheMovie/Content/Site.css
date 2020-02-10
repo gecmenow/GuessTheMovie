@@ -108,4 +108,24 @@ h4 {
     font-size: 18px;
 }
 
+.film-new a:hover {
+    text-decoration:none;
+    color: #fff;
+}
+
+.film-table {
+    color: #fff;
+    background-color: rgba(0,0,0,0.55) !important;
+}
+
+.film-table a:hover{
+    text-decoration:none;
+    color: #fff;
+}
+
+.page{
+    color: #fff;
+    text-align:center;
+}
+
 /*LOGIN Form*/

@@ -20,6 +20,12 @@ namespace GuessTheMovie
            );
 
             routes.MapRoute(
+              name: "edit",
+              url: "edit/{FilmId}",
+              defaults: new { controller = "Home", action = "Edit", FilmId = UrlParameter.Optional }
+           );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
