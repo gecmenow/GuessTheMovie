@@ -15,15 +15,20 @@ namespace GuessTheMovie.Models.Admin
 
             using (DataBaseContext db = new DataBaseContext())
             {
-                user = db.AdminDB.Where(u => u.Login == admin.Login && u.Password == admin.Password)
+                user = db.AdminDB
                     .Select(
-                    x => new AdminVM { 
-                            AdminCode = x.AdminCode,
-                            Login = x.Login,
-                            Password = x.Password,
+                    x => new AdminVM
+                    {
+                        AdminCode = x.AdminCode,
+                        Login = x.Login,
+                        Password = x.Password,
                     }).FirstOrDefault();
             }
 
+            if (user.Login != admin.Login && user.Password != admin.Password)
+                user = null;
+            else
+                user.RememberMe = admin.RememberMe;
             return user;
         }
     }

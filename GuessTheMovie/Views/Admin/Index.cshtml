@@ -8,109 +8,25 @@
 <div class="container">
     <div class="row">
         <div class="col-md-4 text-center form-wrapper">
-            <h1 class='text-white'>Unique Login Form</h1>
-            @using (Html.BeginForm("Edit", "Admin", FormMethod.Post, new { @class = "form-login" }))
+            
+            @using (Html.BeginForm("Index", "Admin", FormMethod.Post, new { @class = "form-login" }))
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true)
                 <br>
-                <h4>Secure Login</h4>
+                <h4>Admin Login</h4>
                 <br>
                 @Html.TextBoxFor(m => m.Login, new { @type = "text", @placeholder = "Login", @class = "form-control input-sm chat-input", @id = "userName" })
                 @*<input type="text" id="userName" class="form-control input-sm chat-input" placeholder="username" />*@
-                <br><br>
+                <br>
                 @Html.PasswordFor(m => m.Password, new { @type = "password", @placeholder = "Password", @class = "form-control input-sm chat-input", @id = "userPassword" })
                 @*<input type="text" id="userPassword" class="form-control input-sm chat-input" placeholder="password" />*@
-                <br><br>
-                <label class="custom-control-label">Remember me</label>
+                <br>
+                <span class="text-size">Remember me</span>
                 @Html.CheckBoxFor(m => m.RememberMe)
-                <br><br>
-                <button type="submit" class="btn float-right login_btn text-dark">Login</button>
+                <br>
+                <button type="submit" class="btn login_btn text-light c-form-login text-size">Login</button>
             }
         </div>
     </div>
 </div>
-
-    @*<div class="container">
-        <div class="d-flex justify-content-center h-100">
-            <div class="card">
-                <div class="card-header">
-                    <h3>Sign In</h3>
-                    <div class="d-flex justify-content-end social_icon">
-                        <span><i class="fab fa-facebook-square"></i></span>
-                        <span><i class="fab fa-google-plus-square"></i></span>
-                        <span><i class="fab fa-twitter-square"></i></span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    @using (Html.BeginForm("Edit", "Admin", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.ValidationSummary(true)
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-user"></i></span>
-                            </div>
-                            @Html.TextBoxFor(m => m.Login, new { @type = "text", @placeholder = "Login", @class = "form-control" })
-                        </div>
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-key"></i></span>
-                            </div>
-                            @Html.PasswordFor(m => m.Password, new { @type = "password", @placeholder = "Password", @class = "form-control" })
-                        </div>
-                        <div class="row align-items-center remember">
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" value="Login" class="btn float-right login_btn">
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>*@
-
-@*<div class="container h-100">
-    <div class="d-flex justify-content-center h-100">
-        <div class="user_card">
-            <div class="d-flex justify-content-center">
-                <div class="brand_logo_container">
-                    <img src="https://cdn.freebiesupply.com/logos/large/2x/pinterest-circle-logo-png-transparent.png" class="brand_logo" alt="Logo">
-                </div>
-            </div>
-            <div class="d-flex justify-content-center form_container">
-                @using (Html.BeginForm("Edit", "Admin", FormMethod.Post))
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true)
-                    <div class="input-group mb-3">
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-user"></i></span>
-                        </div>
-                        @Html.TextBoxFor(m => m.Login, new { @type = "text", @placeholder = "Login", @class = "form-control input_user" })
-                        <input type="text" name="" class="form-control input_user" value="" placeholder="username">
-                    </div>
-                    <div class="input-group mb-2">
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-key"></i></span>
-                        </div>
-                        @Html.PasswordFor(m => m.Password, new { @type = "password", @placeholder = "Password", @class = "form-control input_pass" })
-                        <input type="password" name="" class="form-control input_pass" value="" placeholder="password">
-                    </div>
-                    <div class="form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="customControlInline">
-                            @Html.CheckBoxFor(m => m.RememberMe, new { @class = "custom-control-input", @id = "customControlInline" })
-                            <label class="custom-control-label" for="customControlInline">Remember me</label>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-center mt-3 login_container">
-                        <button type="button" name="button" class="btn login_btn">Login</button>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
-</div>*@
-

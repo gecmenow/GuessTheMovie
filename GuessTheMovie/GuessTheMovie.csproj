@@ -299,8 +299,17 @@
     <Compile Include="Migrations\202002081903160_admin db.designer.cs">
       <DependentUpon>202002081903160_admin db.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002102011362_update db.cs" />
+    <Compile Include="Migrations\202002102011362_update db.designer.cs">
+      <DependentUpon>202002102011362_update db.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002102050395_update 2.cs" />
+    <Compile Include="Migrations\202002102050395_update 2.designer.cs">
+      <DependentUpon>202002102050395_update 2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin\Admin.cs" />
+    <Compile Include="Models\Admin\AdminFilms.cs" />
     <Compile Include="Models\DataBase\AdminDB.cs" />
     <Compile Include="Models\DataBase\DataBaseContext.cs" />
     <Compile Include="Models\DataBase\FilmsDB.cs" />
@@ -358,10 +367,10 @@
     <Content Include="Content\Site.css" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -401,6 +410,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202002081903160_admin db.resx">
       <DependentUpon>202002081903160_admin db.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002102011362_update db.resx">
+      <DependentUpon>202002102011362_update db.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002102050395_update 2.resx">
+      <DependentUpon>202002102050395_update 2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GuessTheMovie.Models.Films;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,9 +11,16 @@ namespace GuessTheMovie.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.Title = "Home Page";
 
-            return View();
+                var data = Films.GetPool();
+
+                return View(data);
+            }
+            else
+                return RedirectToAction("Index", "Admin");
         }
     }
 }

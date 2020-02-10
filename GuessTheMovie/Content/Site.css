@@ -18,13 +18,21 @@ textarea {
 
 /*LOGIN Form*/
 
+html {
+    min-height: 100vh;
+}
+
 body {
-    background-image: url('https://wallpaperaccess.com/full/393735.jpg');
-    background-position: center;
+    background-image: url("./img/admin_background.jpg");
     background-size: cover;
+    background-repeat: no-repeat;
     -webkit-font-smoothing: antialiased;
     font: normal 14px Roboto,arial,sans-serif;
     font-family: 'Dancing Script', cursive !important;
+    min-height: 100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
 }
 
 .container {
@@ -48,6 +56,19 @@ body {
     border-width: 5px;
     color: white;
     box-shadow: 0 1px 0 #cfcfcf;
+}
+
+.text-size {
+    font-size: 20px !important;
+}
+
+.c-form-login {
+    border: 2px solid rgba(0, 0, 0, 0.00) !important;
+    margin-top: 5px;
+}
+
+.c-form-login:hover {
+    border: 2px solid #fff !important;
 }
 
 .form-wrapper {

@@ -31,7 +31,7 @@ namespace GuessTheMovie.Controllers
                     ModelState.AddModelError("", "Login or password is incorrect!");
             }
 
-            return View();
+            return RedirectToAction("Index","Home");
         }
     }
 }
