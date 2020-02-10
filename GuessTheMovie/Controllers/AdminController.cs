@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace GuessTheMovie.Controllers
 {
@@ -25,13 +26,9 @@ namespace GuessTheMovie.Controllers
                 admin = Admin.Login(admin);
 
                 if (admin != null)
-                {
-                    AdminCookie adminCookie = new AdminCookie();
-
-                    adminCookie.SetAdminCookie(admin);
-                }
+                    FormsAuthentication.SetAuthCookie(admin.AdminCode.ToString(), admin.RememberMe);
                 else
-                    ModelState.AddModelError("", "Логин или пароль неправильный!");
+                    ModelState.AddModelError("", "Login or password is incorrect!");
             }
 
             return View();
