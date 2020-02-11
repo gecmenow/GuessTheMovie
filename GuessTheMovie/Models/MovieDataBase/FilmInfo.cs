@@ -44,12 +44,13 @@ namespace GuessTheMovie.Models.MovieDataBase
 
             string link = "https://image.tmdb.org/t/p/original";
 
+            string filmImage = "";
+
             foreach (var image in filmImages.Backdrops)
-                images.Add(link + image.FilePath);
+                filmImage += link + image.FilePath + ";";
+                //images.Add(link + image.FilePath);
 
-            string filmImage = images.FirstOrDefault();
-
-            return filmImage;            
+            return filmImage;
         }
     }
 }

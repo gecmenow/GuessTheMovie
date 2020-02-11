@@ -22,7 +22,7 @@ namespace GuessTheMovie.Models.Admin
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
-            var response = await client.GetStringAsync("https://api.themoviedb.org/3/movie/popular?api_key=" + key + "&language=en-US&page=" + page);
+            var response = await client.GetStringAsync("https://api.themoviedb.org/3/movie/popular?api_key=" + key + "&language=ru-RU&page=" + page);
 
             TmdBv1 tmdbV1 = TmdBv1.FromJson(response);
 
@@ -36,23 +36,30 @@ namespace GuessTheMovie.Models.Admin
 
                     data.FilmCode = film.Id.ToString();
 
+                    var filmId = db.FilmsDB.Select(f => f.FilmCode).ToList();
+
+                    if (!filmId.Contains(data.FilmCode))
+                    {
+                        data.Genre = await FilmInfo.GetFilmGenres(data.FilmCode);
+
+                        data.Name = film.Title;
+
+                        data.Image = await FilmInfo.GetFilmImages(data.FilmCode);
+
+                        data.Year = film.ReleaseDate.Year;
+
+                        db.FilmsDB.Add(data);
+
+                        db.SaveChanges();
+                    }
+
                     //List<string> genres = await FilmInfo.GetFilmGenres(data.FilmCode);
 
-                    data.Genre = await FilmInfo.GetFilmGenres(data.FilmCode);
-
-                    data.Name = film.Title;
-
-                    data.Image = await FilmInfo.GetFilmImages(data.FilmCode);
-
-                    data.Year = film.ReleaseDate.Year;
-
-
-                    //db.FilmsDB.Add();
+                    string temp = "";
                 }
-            }
-
-            string temp = "";
+            } 
         }
+
         public static FilmsVM GetFilm(int id)
         {
             FilmsVM data = new FilmsVM();
@@ -72,6 +79,7 @@ namespace GuessTheMovie.Models.Admin
 
             return data;
         }
+
         public static List<FilmsVM> GetFilms()
         {
             List<FilmsVM> data = new List<FilmsVM>();

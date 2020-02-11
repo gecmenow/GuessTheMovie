@@ -15,16 +15,16 @@ namespace GuessTheMovie.Models.Films
         {
             List<PoolVM> data = new List<PoolVM>();
 
-            using (DataBaseContext _db = new DataBaseContext())
+            using (DataBaseContext db = new DataBaseContext())
             {
-                data = await _db.FilmsDB.Select(
+                data = await db.FilmsDB.Select(
                     x => new PoolVM
                     {
                         FilmCode = x.FilmCode,
                         FilmName = x.Name,
                         FilmYear = x.Year,
                         FilmGenre = x.Genre,
-                        FilmImage = x.Image
+                        FilmImage = x.Image,
                     }).ToListAsync();
             }
 

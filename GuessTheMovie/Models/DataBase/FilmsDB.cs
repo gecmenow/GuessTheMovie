@@ -13,5 +13,17 @@ namespace GuessTheMovie.Models.DataBase
         public int Year { get; set; }
         public string Genre { get; set; }
         public string Image { get; set; }
+
+        public FilmsDB()
+        { }
+
+        public FilmsDB(string filmCode, string genre, string image, string name, int year)
+        {
+            FilmCode = filmCode;
+            Genre = genre;
+            Image = image;
+            Name = name;
+            Year = year;
+        }
     }
 }

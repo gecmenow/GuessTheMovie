@@ -68,7 +68,7 @@ namespace GuessTheMovie.Models.MovieDataBase
         public DateTimeOffset ReleaseDate { get; set; }
     }
 
-    public enum OriginalLanguage { Cn, En, Ko };
+    public enum OriginalLanguage { Cn, En, Ko, Hi };
 
     public partial class TmdBv1
     {
@@ -110,6 +110,10 @@ namespace GuessTheMovie.Models.MovieDataBase
                     return OriginalLanguage.En;
                 case "ko":
                     return OriginalLanguage.Ko;
+                case "hi":
+                    return OriginalLanguage.Hi;
+                default:
+                    return OriginalLanguage.En;
             }
             throw new Exception("Cannot unmarshal type OriginalLanguage");
         }
@@ -132,6 +136,9 @@ namespace GuessTheMovie.Models.MovieDataBase
                     return;
                 case OriginalLanguage.Ko:
                     serializer.Serialize(writer, "ko");
+                    return;
+                case OriginalLanguage.Hi:
+                    serializer.Serialize(writer, "hi");
                     return;
             }
             throw new Exception("Cannot marshal type OriginalLanguage");

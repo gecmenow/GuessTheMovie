@@ -86,6 +86,9 @@ namespace GuessTheMovie.Models.Films
                     films.Add(temp[index]);
             }
 
+            foreach (var film in films)
+                film.FilmImage = film.FilmImage.Split(';')[0];
+
             return films;
         }
     }
