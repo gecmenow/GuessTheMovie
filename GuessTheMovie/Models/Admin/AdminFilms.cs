@@ -16,7 +16,7 @@ namespace GuessTheMovie.Models.Admin
         public static async Task UpdateDatabase()
         {
             string key = "7bf0ddbd0b708dd904d550607793fa52";
-            string page = "1";
+            string page = "6";
 
             HttpClient client = new HttpClient();
 

@@ -10,14 +10,9 @@ namespace GuessTheMovie.Models.Films
     {
         static List<string> watched = new List<string>();
 
-        public SortFilms(string filmCode)
-        { }
-
         public static List<PoolVM> Sort(List<PoolVM> data)
         {
             List<string> watchedList = new List<string>();
-
-            List<SortFilms> watched1 = new List<SortFilms>();
 
             List<PoolVM> films = new List<PoolVM>();
 
@@ -27,7 +22,7 @@ namespace GuessTheMovie.Models.Films
 
             while (films.Count() < 1)
             {
-                int moviesCount = data.Count();
+                int moviesCount = data.Count() - 1;
 
                 index = r.Next(moviesCount);
 
@@ -60,6 +55,23 @@ namespace GuessTheMovie.Models.Films
             string genre = films.Select(x => x.FilmGenre).FirstOrDefault();
 
             var genrePool = data.Where(x => x.FilmGenre == genre).ToList();
+
+            while (genrePool.Count < 4)
+            {
+                int moviesCount = data.Count() - 1;
+
+                index = r.Next(moviesCount);
+
+                if (!watched.Contains(data[index].FilmCode) && !genrePool.Contains(data[index]))
+                {
+                    genrePool.Add(data[index]);
+                }
+
+                if (data.Count() < 4)
+                {
+                    genrePool.Add(data[index]);
+                }
+            }
 
             while (films.Count() < 4)
             {
