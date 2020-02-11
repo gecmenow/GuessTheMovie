@@ -10,8 +10,15 @@ namespace GuessTheMovie.Models.Films
     {
         static List<string> watched = new List<string>();
 
+        public SortFilms(string filmCode)
+        { }
+
         public static List<PoolVM> Sort(List<PoolVM> data)
         {
+            List<string> watchedList = new List<string>();
+
+            List<SortFilms> watched1 = new List<SortFilms>();
+
             List<PoolVM> films = new List<PoolVM>();
 
             Random r = new Random();

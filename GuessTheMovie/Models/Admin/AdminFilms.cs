@@ -1,14 +1,58 @@
 ﻿using GuessTheMovie.Models.DataBase;
+using GuessTheMovie.Models.MovieDataBase;
 using GuessTheMovie.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace GuessTheMovie.Models.Admin
 {
     public class AdminFilms
     {
+        public static async Task UpdateDatabase()
+        {
+            string key = "7bf0ddbd0b708dd904d550607793fa52";
+            string page = "1";
+
+            HttpClient client = new HttpClient();
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
+            var response = await client.GetStringAsync("https://api.themoviedb.org/3/movie/popular?api_key=" + key + "&language=en-US&page=" + page);
+
+            TmdBv1 tmdbV1 = TmdBv1.FromJson(response);
+
+            List<string> images = new List<string>();
+
+            using(DataBaseContext db = new DataBaseContext())
+            {
+                foreach (var film in tmdbV1.Results)
+                {
+                    FilmsDB data = new FilmsDB();
+
+                    data.FilmCode = film.Id.ToString();
+
+                    //List<string> genres = await FilmInfo.GetFilmGenres(data.FilmCode);
+
+                    data.Genre = await FilmInfo.GetFilmGenres(data.FilmCode);
+
+                    data.Name = film.Title;
+
+                    data.Image = await FilmInfo.GetFilmImages(data.FilmCode);
+
+                    data.Year = film.ReleaseDate.Year;
+
+
+                    //db.FilmsDB.Add();
+                }
+            }
+
+            string temp = "";
+        }
         public static FilmsVM GetFilm(int id)
         {
             FilmsVM data = new FilmsVM();

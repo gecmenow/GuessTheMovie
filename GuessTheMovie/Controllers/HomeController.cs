@@ -6,11 +6,19 @@ using System.Web;
 using System.Web.Mvc;
 using PagedList;
 using GuessTheMovie.Models.ViewModels;
+using System.Threading.Tasks;
 
 namespace GuessTheMovie.Controllers
 {
     public class HomeController : Controller
     {
+        public async Task<ActionResult> Update()
+        {
+            await AdminFilms.UpdateDatabase();
+
+            return RedirectToAction("Index");
+        }
+
         public ActionResult Index(int? page)
         {
             if (User.Identity.IsAuthenticated)
