@@ -28,7 +28,9 @@ namespace GuessTheMovie.Models.Films
                 if (film.FilmImage != null)
                     film.FilmImage = film.FilmImage.Split(';')[0];
             }
-                
+
+            films = MixFilms(films);
+
             return films;
         }
 
@@ -54,6 +56,8 @@ namespace GuessTheMovie.Models.Films
 
             foreach (var film in films)
                 film.FilmImage = film.FilmImage.Split(';')[0];
+
+            films = MixFilms(films);
 
             return films;
         }
@@ -83,6 +87,22 @@ namespace GuessTheMovie.Models.Films
             }
 
             return data;
+        }
+
+        public static List<FilmVM> MixFilms(List<FilmVM> films)
+        {
+            Random random = new Random();
+
+            for (int i = films.Count() - 1; i >= 1; i--)
+            {
+                int j = random.Next(i + 1);
+                // обменять значения data[j] и data[i]
+                var temp = films[j];
+                films[j] = films[i];
+                films[i] = temp;
+            }
+
+            return films;
         }
 
         //public static async Task<List<FilmVM>> GetPool(List<string> watched)
