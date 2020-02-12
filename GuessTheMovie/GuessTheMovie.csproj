@@ -324,9 +324,10 @@
     <Compile Include="Models\MovieDataBase\FilmGenresVM.cs" />
     <Compile Include="Models\MovieDataBase\FilmImagesVM.cs" />
     <Compile Include="Models\MovieDataBase\FilmInfo.cs" />
+    <Compile Include="Models\MovieDataBase\FilmSimilarVM.cs" />
     <Compile Include="Models\ViewModels\AdminVM.cs" />
     <Compile Include="Models\ViewModels\FilmsVM.cs" />
-    <Compile Include="Models\ViewModels\PoolVM.cs" />
+    <Compile Include="Models\ViewModels\FilmVM.cs" />
     <Compile Include="Models\MovieDataBase\TMDBv1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
