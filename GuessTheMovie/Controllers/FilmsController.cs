@@ -18,20 +18,8 @@ namespace GuessTheMovie.Controllers
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         public async Task<IEnumerable<FilmVM>> Get()
         {
-            Random r = new Random();
-
-            //List<int> temp = new List<int>();
-
-            //temp.Add(r.Next());
-
-            //List<int> temp1 = new List<int>()
-            //    temp1 = await (List<int>)HttpContext.Current.Session["name"];
-
-            //HttpContext.Current.Session["name"] = temp;
-
             //async
-            var data = await Films.GetFilms();
-            //var data = db.FilmsDB.ToListAsync();      
+            var data = await Films.GetFilms();   
 
             return data;
         }
@@ -39,8 +27,6 @@ namespace GuessTheMovie.Controllers
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         public async Task<IEnumerable<FilmVM>> Get(string id)
         {
-            Random r = new Random();
-
             //List<int> temp = new List<int>();
 
             //temp.Add(r.Next());

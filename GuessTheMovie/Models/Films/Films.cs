@@ -15,29 +15,40 @@ namespace GuessTheMovie.Models.Films
 {
     public class Films
     {
+        public static async Task<List<FilmVM>> GetFilms()
+        {
+            FilmVM data = new FilmVM();
+
+            data = await GetRandomFilm();
+
+            List<FilmVM> films = await GetPool(data);
+
+            foreach (var film in films)
+            {
+                if (film.FilmImage != null)
+                    film.FilmImage = film.FilmImage.Split(';')[0];
+            }
+                
+            return films;
+        }
+
         public static async Task<List<FilmVM>> GetFilms(string watched)
         {
             FilmVM data = new FilmVM();
 
-            if (watched != null)
+            List<string> watchedList = new List<string>();
+
+            watchedList = watched.Split(';').ToList();
+
+            watchedList.RemoveAt(watchedList.Count - 1);
+
+            while (true)
             {
-                List<string> watchedList = new List<string>();
-
-                watchedList = watched.Split(';').ToList();
-
-                watchedList.RemoveAt(watchedList.Count - 1);
-
-                while (true)
-                {
-                    data = await GetRandomFilm();
-
-                    if (!watchedList.Contains(data.FilmCode))
-                        break;
-                }
-                
-            }
-            else
                 data = await GetRandomFilm();
+
+                if (!watchedList.Contains(data.FilmCode))
+                    break;
+            }
 
             List<FilmVM> films = await GetPool(data);
 
