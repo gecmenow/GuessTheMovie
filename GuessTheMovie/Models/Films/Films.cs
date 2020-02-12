@@ -55,7 +55,8 @@ namespace GuessTheMovie.Models.Films
             List<FilmVM> films = await GetPool(data);
 
             foreach (var film in films)
-                film.FilmImage = film.FilmImage.Split(';')[0];
+                if (film.FilmImage != null)
+                    film.FilmImage = film.FilmImage.Split(';')[0];
 
             films = MixFilms(films);
 
