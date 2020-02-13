@@ -165,7 +165,7 @@ namespace GuessTheMovie.Models.Films
                     });
             }
 
-            if (similarFilms.Count() < 3)
+            while (similarFilms.Count() < 3)
             {
                 var film = await GetRandomFilm();
 
@@ -184,8 +184,16 @@ namespace GuessTheMovie.Models.Films
 
                 //int index = 0;
 
-                if (!films.Contains(similarFilms[index]))
-                    films.Add(similarFilms[index]);
+                foreach (var film in films)
+                {
+                    if (film.FilmCode != similarFilms[index].FilmCode)
+                        films.Add(similarFilms[index]);
+                    break;
+                }
+                    
+
+                //if (!films.Contains(similarFilms[index]))
+                //    films.Add(similarFilms[index]);
             }
 
             return films;
