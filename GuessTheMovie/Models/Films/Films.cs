@@ -150,7 +150,7 @@ namespace GuessTheMovie.Models.Films
 
             //var response = await client.GetStringAsync("https://api.themoviedb.org/3/movie/" + 466272 + "/similar?api_key=7bf0ddbd0b708dd904d550607793fa52&language=ru-RU");
 
-            var similar = FilmSimilarVM.FromJson(response).Results.ToList(); ;
+            var similar = FilmSimilarVM.FromJson(response).SimResults.ToList(); ;
 
             List<FilmVM> similarFilms = new List<FilmVM>();
 
@@ -181,10 +181,6 @@ namespace GuessTheMovie.Models.Films
             while (films.Count() < 4)
             {
                 int index = random.Next(similarFilms.Count());
-
-                //int index = 0;
-
-                //var temp = films.ToList();
 
                 if (films.Any(x=>x.FilmCode == similarFilms[index].FilmCode) == false)
                     films.Add(similarFilms[index]);

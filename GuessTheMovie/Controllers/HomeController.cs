@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using PagedList;
 using GuessTheMovie.Models.ViewModels;
 using System.Threading.Tasks;
+using GuessTheMovie.Models.MovieDataBase;
 
 namespace GuessTheMovie.Controllers
 {
@@ -15,6 +16,8 @@ namespace GuessTheMovie.Controllers
         public async Task<ActionResult> Update()
         {
             await AdminFilms.UpdateDatabase();
+
+            FilmInfo.CheckSimilarFilms();
 
             return RedirectToAction("Index");
         }
@@ -52,6 +55,13 @@ namespace GuessTheMovie.Controllers
                 return View("Index");
             else
                 return View(flag);
+        }
+
+        public ActionResult ClearDataBase()
+        {
+            AdminFilms.ClearDataBase();
+
+            return RedirectToAction("Index");
         }
     }
 }

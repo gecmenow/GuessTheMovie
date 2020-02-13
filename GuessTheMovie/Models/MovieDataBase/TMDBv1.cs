@@ -89,7 +89,7 @@ namespace GuessTheMovie.Models.MovieDataBase
             Converters =
             {
                 OriginalLanguageConverter.Singleton,
-                new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
+                new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.None }
             },
         };
     }

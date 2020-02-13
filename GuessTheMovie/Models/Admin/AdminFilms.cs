@@ -16,48 +16,67 @@ namespace GuessTheMovie.Models.Admin
         public static async Task UpdateDatabase()
         {
             string key = "7bf0ddbd0b708dd904d550607793fa52";
-            string page = "6";
+
+            int maxPage = 500;
 
             HttpClient client = new HttpClient();
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
-            var response = await client.GetStringAsync("https://api.themoviedb.org/3/movie/popular?api_key=" + key + "&language=ru-RU&page=" + page);
+            int page = 15;
 
-            TmdBv1 tmdbV1 = TmdBv1.FromJson(response);
-
-            List<string> images = new List<string>();
-
-            using(DataBaseContext db = new DataBaseContext())
+            while (page != maxPage)
             {
-                foreach (var film in tmdbV1.Results)
+                var response = await client.GetStringAsync("https://api.themoviedb.org/3/movie/popular?api_key=" + key + "&language=ru-RU&page=" + page.ToString());
+
+                TmdBv1 tmdbV1 = TmdBv1.FromJson(response);
+
+                List<string> images = new List<string>();
+
+                using (DataBaseContext db = new DataBaseContext())
                 {
-                    FilmsDB data = new FilmsDB();
-
-                    data.FilmCode = film.Id.ToString();
-
-                    var filmId = db.FilmsDB.Select(f => f.FilmCode).ToList();
-
-                    if (!filmId.Contains(data.FilmCode))
+                    foreach (var film in tmdbV1.Results)
                     {
-                        data.Genre = await FilmInfo.GetFilmGenres(data.FilmCode);
+                        FilmsDB data = new FilmsDB();
 
-                        data.Name = film.Title;
+                        data.FilmCode = film.Id.ToString();
 
-                        data.Image = await FilmInfo.GetFilmImages(data.FilmCode);
+                        var filmId = db.FilmsDB.Select(f => f.FilmCode).ToList();
 
-                        data.Year = film.ReleaseDate.Year;
+                        if (!filmId.Contains(data.FilmCode))
+                        {
+                            data.Name = film.Title;
 
-                        db.FilmsDB.Add(data);
+                            data.Image = await FilmInfo.GetFilmImages(data.FilmCode);
 
-                        db.SaveChanges();
+                            if (data.Image == "")
+                                continue;
+
+                            data.SimilarFilmsCode = await FilmInfo.GetSimilarFilms(data.FilmCode);
+
+                            if (data.SimilarFilmsCode == null)
+                                continue;
+
+                            data.Genre = await FilmInfo.GetFilmGenres(data.FilmCode);
+
+                            if (data.Genre == null)
+                                continue;
+
+                            data.Year = film.ReleaseDate.Year;
+
+                            db.FilmsDB.Add(data);
+
+                            db.SaveChanges();
+                        }
+
+                        //List<string> genres = await FilmInfo.GetFilmGenres(data.FilmCode);
                     }
 
-                    //List<string> genres = await FilmInfo.GetFilmGenres(data.FilmCode);
+                    page++;
 
-                    string temp = "";
+                    maxPage = Convert.ToInt32(tmdbV1.TotalPages / 10);
                 }
-            } 
+            }
         }
 
         public static FilmsVM GetFilm(int id)
@@ -132,6 +151,19 @@ namespace GuessTheMovie.Models.Admin
             }
 
             return flag;
+        }
+
+        public static void ClearDataBase()
+        {
+            using (DataBaseContext db = new DataBaseContext())
+            {
+                var data = db.FilmsDB.ToList();
+
+                foreach (var film in data)
+                    db.FilmsDB.Remove(film);
+
+                db.SaveChanges();
+            }
         }
     }
 }
