@@ -17,9 +17,10 @@ namespace GuessTheMovie.Models.Films
     {
         public static async Task<List<FilmVM>> GetFilms()
         {
-            FilmVM data = new FilmVM();
+            FilmVM data = null;
 
-            data = await GetRandomFilm();
+            while (data == null)
+                data = await GetRandomFilm();
 
             List<FilmVM> films = await GetPool(data);
 
@@ -36,7 +37,7 @@ namespace GuessTheMovie.Models.Films
 
         public static async Task<List<FilmVM>> GetFilms(string watched)
         {
-            FilmVM data = new FilmVM();
+            FilmVM data = null;
 
             List<string> watchedList = new List<string>();
 
@@ -46,7 +47,8 @@ namespace GuessTheMovie.Models.Films
 
             while (true)
             {
-                data = await GetRandomFilm();
+                while (data == null)
+                    data = await GetRandomFilm();
 
                 if (!watchedList.Contains(data.FilmCode))
                     break;
@@ -73,7 +75,7 @@ namespace GuessTheMovie.Models.Films
             {
                 var filmsCount = db.FilmsDB.Count();
 
-                int index = random.Next(filmsCount);
+                int index = random.Next(65, filmsCount);
 
                 data = await db.FilmsDB.Where(f => f.Id == index).Select(
                     x => new FilmVM
@@ -155,6 +157,7 @@ namespace GuessTheMovie.Models.Films
                 similarFilms.Add(
                     new FilmVM
                     {
+                        FilmCode = film.Id.ToString(),
                         FilmName = film.Title,
                         FilmYear = film.ReleaseDate.Year
                     });
@@ -177,7 +180,8 @@ namespace GuessTheMovie.Models.Films
             {
                 int index = random.Next(similarFilms.Count());
 
-                films.Add(similarFilms[index]);
+                if (!films.Contains(similarFilms[index]))
+                    films.Add(similarFilms[index]);
             }
 
             return films;
