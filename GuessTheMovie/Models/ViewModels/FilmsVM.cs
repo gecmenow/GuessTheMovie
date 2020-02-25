@@ -13,5 +13,6 @@ namespace GuessTheMovie.Models.ViewModels
         public int Year { get; set; }
         public string Genre { get; set; }
         public string Image { get; set; }
+        public string SimilarFilmsCode { get; set; }
     }
 }

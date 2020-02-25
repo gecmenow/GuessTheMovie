@@ -20,7 +20,7 @@ namespace GuessTheMovie.Models.Films
             FilmVM data = null;
 
             while (data == null)
-                data = await GetRandomFilm();
+                data = await GetFirstRandomFilm();
 
             List<FilmVM> films = await GetPool(data);
 
@@ -37,21 +37,24 @@ namespace GuessTheMovie.Models.Films
 
         public static async Task<List<FilmVM>> GetFilms(string watched)
         {
-            FilmVM data = null;
-
             List<string> watchedList = new List<string>();
 
             watchedList = watched.Split(';').ToList();
 
             watchedList.RemoveAt(watchedList.Count - 1);
 
+            FilmVM data = null;
+
+            while(data == null)
+                data = await GetFirstRandomFilm();
+
             while (true)
             {
-                while (data == null)
-                    data = await GetRandomFilm();
-
                 if (!watchedList.Contains(data.FilmCode))
                     break;
+                else
+                    while(data == null)
+                        data = await GetRandomFilm();                    
             }
 
             List<FilmVM> films = await GetPool(data);
@@ -65,7 +68,7 @@ namespace GuessTheMovie.Models.Films
             return films;
         }
 
-        public static async Task<FilmVM> GetRandomFilm()
+        public static async Task<FilmVM> GetFirstRandomFilm()
         {
             FilmVM data = new FilmVM();
 
@@ -74,8 +77,10 @@ namespace GuessTheMovie.Models.Films
             using (DataBaseContext db = new DataBaseContext())
             {
                 var filmsCount = db.FilmsDB.Count();
+                var startIndex = db.FilmsDB.FirstOrDefault().Id;
+                var lastIndex = db.FilmsDB.ToList().LastOrDefault().Id;
 
-                int index = random.Next(65, filmsCount);
+                int index = random.Next(startIndex, lastIndex);
 
                 data = await db.FilmsDB.Where(f => f.Id == index).Select(
                     x => new FilmVM
@@ -86,6 +91,33 @@ namespace GuessTheMovie.Models.Films
                         FilmGenre = x.Genre,
                         FilmImage = x.Image,
                         Correct = true,
+                    }).FirstOrDefaultAsync();
+            }
+
+            return data;
+        }
+
+        public static async Task<FilmVM> GetRandomFilm()
+        {
+            FilmVM data = new FilmVM();
+
+            Random random = new Random();
+
+            using (DataBaseContext db = new DataBaseContext())
+            {
+                var filmsCount = db.FilmsDB.Count();
+                var startIndex = db.FilmsDB.FirstOrDefault().Id;
+                var lastIndex = db.FilmsDB.ToList().LastOrDefault().Id;
+
+                int index = random.Next(startIndex, lastIndex);
+
+                data = await db.FilmsDB.Where(f => f.Id == index).Select(
+                    x => new FilmVM
+                    {
+                        FilmCode = x.FilmCode,
+                        FilmName = x.Name,
+                        FilmYear = x.Year,
+                        Correct = false,
                     }).FirstOrDefaultAsync();
             }
 
@@ -142,32 +174,76 @@ namespace GuessTheMovie.Models.Films
 
         public static async Task<List<FilmVM>> GetPool(FilmVM data)
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
-            HttpClient client = new HttpClient();
+            //HttpClient client = new HttpClient();
 
-            var response = await client.GetStringAsync("https://api.themoviedb.org/3/movie/" + data.FilmCode + "/similar?api_key=7bf0ddbd0b708dd904d550607793fa52&language=ru-RU");
+            //var response = await client.GetStringAsync("https://api.themoviedb.org/3/movie/" + data.FilmCode + "/similar?api_key=7bf0ddbd0b708dd904d550607793fa52&language=ru-RU");
 
             //var response = await client.GetStringAsync("https://api.themoviedb.org/3/movie/" + 466272 + "/similar?api_key=7bf0ddbd0b708dd904d550607793fa52&language=ru-RU");
 
-            var similar = FilmSimilarVM.FromJson(response).SimResults.ToList(); ;
-
             List<FilmVM> similarFilms = new List<FilmVM>();
 
-            foreach (var film in similar)
+            using (DataBaseContext db = new DataBaseContext())
             {
-                similarFilms.Add(
-                    new FilmVM
+                var filmInfo = db.FilmsDB.Where(f => f.FilmCode == data.FilmCode).Select(
+                    f => new FilmsVM
                     {
-                        FilmCode = film.Id.ToString(),
-                        FilmName = film.Title,
-                        FilmYear = film.ReleaseDate.Year
-                    });
+                        SimilarFilmsCode = f.SimilarFilmsCode,
+                    }).FirstOrDefault();
+
+                var similarFilmsList = filmInfo.SimilarFilmsCode.Split(';').ToList();
+
+                foreach (var simFilms in similarFilmsList)
+                {
+                    try
+                    {
+                        var similar = db.FilmsDB.Where(f => f.FilmCode == simFilms).Select(f => new FilmVM
+                        {
+                            FilmCode = f.FilmCode,
+                            FilmName = f.Name,
+                            FilmYear = f.Year,
+                        }).FirstOrDefault();
+
+                        similarFilms.Add(similar);
+                    }
+                    catch(Exception e)
+                    { }
+
+                }
             }
+
+            //var similar = FilmSimilarVM.FromJson(response).SimResults.ToList(); ;
+
+            //List<FilmVM> similarFilms = new List<FilmVM>();
+
+            //foreach (var film in similar)
+            //{
+            //    similarFilms.Add(
+            //        new FilmVM
+            //        {
+            //            FilmCode = film.Id.ToString(),
+            //            FilmName = film.Title,
+            //            FilmYear = film.ReleaseDate.Year
+            //        });
+            //}
+
+            var temp = similarFilms.ToList();
+
+            foreach (var similar in similarFilms)
+                if (similar == null)
+                    temp.Remove(similar);
+
+            similarFilms.Clear();
+
+            similarFilms = temp.ToList();
 
             while (similarFilms.Count() < 6)
             {
-                var film = await GetRandomFilm();
+                FilmVM film = null;
+
+                while (film == null)
+                    film = await GetRandomFilm();
 
                 similarFilms.Add(film);
             }
