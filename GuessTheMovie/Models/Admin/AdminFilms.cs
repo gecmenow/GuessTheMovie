@@ -99,14 +99,14 @@ namespace GuessTheMovie.Models.Admin
             return data;
         }
 
-        public static List<FilmsVM> GetFilms()
+        public static List<AdminFilmsVM> GetFilms()
         {
-            List<FilmsVM> data = new List<FilmsVM>();
+            List<AdminFilmsVM> data = new List<AdminFilmsVM>();
 
             using(DataBaseContext db = new DataBaseContext())
             {
                 data = db.FilmsDB.Select(f =>
-                new FilmsVM
+                new AdminFilmsVM
                 {
                     FilmId = f.Id,
                     FilmCode = f.FilmCode,
@@ -115,14 +115,17 @@ namespace GuessTheMovie.Models.Admin
                     Name = f.Name,
                     Year = f.Year,
                 }).ToList();
+
+                foreach (var film in data)
+                    film.ImageCount = film.Image.Split(';').Count();
             }
 
             return data;
         }
 
-        public static FilmsVM EditFilm(FilmsVM film)
+        public static AdminFilmsVM EditFilm(FilmsVM film)
         {
-            FilmsVM flag = new FilmsVM();
+            AdminFilmsVM flag = new AdminFilmsVM();
 
             try
             {
@@ -140,7 +143,7 @@ namespace GuessTheMovie.Models.Admin
 
                     flag.FilmCode = data.FilmCode;
                     flag.Genre = data.Genre;
-                    flag.Image = data.Image;
+                    flag.FilmImages = data.Image.Split(';').ToList();
                     flag.Name = data.Name;
                     flag.Year = data.Year;
                 }                
