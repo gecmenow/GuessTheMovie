@@ -129,3 +129,13 @@ h4 {
 }
 
 /*LOGIN Form*/
+
+/*EDIT FILM*/
+
+.film-image {
+    width: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.00);
+    border-radius: 10px;
+}
+
+/*EDIT FILM*/

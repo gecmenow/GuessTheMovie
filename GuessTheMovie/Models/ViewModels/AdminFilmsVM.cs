@@ -15,6 +15,7 @@ namespace GuessTheMovie.Models.ViewModels
         public string Image { get; set; }
         public int ImageCount { get; set; }
         public List<string> FilmImages { get; set; }
+        public List<string> ImageList { get; set; }
         public string SimilarFilmsCode { get; set; }
     }
 }

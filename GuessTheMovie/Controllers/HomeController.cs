@@ -47,12 +47,12 @@ namespace GuessTheMovie.Controllers
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult Edit(FilmsVM film)
+        public ActionResult Edit(AdminFilmsVM film)
         {
             var flag = AdminFilms.EditFilm(film);
 
-            if (flag == null)
-                return View("Index");
+            if (flag != null)
+                return RedirectToAction("Index");
             else
                 return View(flag);
         }

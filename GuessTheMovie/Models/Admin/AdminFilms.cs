@@ -79,14 +79,14 @@ namespace GuessTheMovie.Models.Admin
             }
         }
 
-        public static FilmsVM GetFilm(int id)
+        public static AdminFilmsVM GetFilm(int id)
         {
-            FilmsVM data = new FilmsVM();
+            AdminFilmsVM data = new AdminFilmsVM();
 
             using (DataBaseContext db = new DataBaseContext())
             {
                 data = db.FilmsDB.Where(f => f.Id == id).Select(f =>
-                  new FilmsVM
+                  new AdminFilmsVM
                   {
                       FilmCode = f.FilmCode,
                       Genre = f.Genre,
@@ -94,6 +94,8 @@ namespace GuessTheMovie.Models.Admin
                       Name = f.Name,
                       Year = f.Year,
                   }).FirstOrDefault();
+
+                data.FilmImages = data.Image.Split(';').ToList();
             }
 
             return data;
@@ -123,7 +125,7 @@ namespace GuessTheMovie.Models.Admin
             return data;
         }
 
-        public static AdminFilmsVM EditFilm(FilmsVM film)
+        public static AdminFilmsVM EditFilm(AdminFilmsVM film)
         {
             AdminFilmsVM flag = new AdminFilmsVM();
 
@@ -131,11 +133,11 @@ namespace GuessTheMovie.Models.Admin
             {
                 using (DataBaseContext db = new DataBaseContext())
                 {
-                    var data = db.FilmsDB.Where(f => f.Id == film.FilmId).FirstOrDefault();
+                    var data = db.FilmsDB.Where(f => f.FilmCode == film.FilmCode).FirstOrDefault();
 
                     data.FilmCode = film.FilmCode;
                     data.Genre = film.Genre;
-                    data.Image = film.Image;
+                    data.Image = String.Join(";", film.ImageList.ToArray());
                     data.Name = film.Name;
                     data.Year = film.Year;
 
