@@ -3,84 +3,85 @@
 @{
     ViewBag.Title = "Edit";
 }
+<div class="wrapper">
+    <h2>Edit</h2>
 
-<h2>Edit</h2>
+    @*@using (Html.BeginForm())*@
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>AdminFilmsVM</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.FilmId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FilmId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FilmId, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    @using (Html.BeginForm("", "", FormMethod.Post, new { @class = "form-edit-film" }))
+    {
+        @Html.AntiForgeryToken()
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.FilmCode, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FilmCode, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FilmCode, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Year, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Year, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Genre, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Genre, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Genre, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="row">
+        <div class="form-horizontal">
+            <h4>AdminFilmsVM</h4>           
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
-                @Html.LabelFor(model => model.FilmImages, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.FilmId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="form-group__input">
+                    @Html.EditorFor(model => model.FilmId, new { htmlAttributes = new { @class = "form-control", @type="text", @readonly="readonly"} })
+                    @Html.ValidationMessageFor(model => model.FilmId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FilmCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="form-group__input">
+                    @Html.EditorFor(model => model.FilmCode, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FilmCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="form-group__input">
+                    @Html.TextAreaFor(model => model.Name, 2, 80, new { @class = "form-control",})
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Year, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="form-group__input">
+                    @Html.EditorFor(model => model.Year, new { htmlAttributes = new { @class = "form-control", @type="text" } })
+                    @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Genre, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="form-group__input">
+                    @Html.EditorFor(model => model.Genre, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Genre, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            
+            <div class="form-group film-image-list">
+                @Html.LabelFor(model => model.FilmImages, htmlAttributes: new { @class = "control-label" })
                 @foreach (var image in Model.FilmImages)
                 {
-                    <div class="col-md-4">
+                    <div class="film-image__item">
                         @*https://image.tmdb.org/t/p/original/*@
-                        <img src="@image" class="film-image" />
-                        <input type="checkbox" name="ImageList" value="@image">
-                    </div>                    
-                 }
+                        <img src="@image" class="film-image__img"/>
+                        <input type="checkbox" name="ImageList" value="@image" class="film-image__checkbox" checked>
+                    </div>
+                }               
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.SimilarFilmsCode, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SimilarFilmsCode, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SimilarFilmsCode, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.SimilarFilmsCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="form-group__input">
+                    @Html.TextAreaFor(model => model.SimilarFilmsCode, 2, 80, new { @class = "form-control", })                    
+                    @Html.ValidationMessageFor(model => model.SimilarFilmsCode, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <div class="form-group">
+                <div class="form-group__input">
+                    <input type="submit" value="Save" class="btn btn-success" />
+                </div>
             </div>
         </div>
-    </div>
-}
+    }
+</div>
 
 <div>
     @Html.ActionLink("Back to List", "Index")

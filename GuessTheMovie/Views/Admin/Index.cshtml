@@ -7,8 +7,8 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-4 text-center form-wrapper">
-            
+        <div class="text-center form-wrapper">
+
             @using (Html.BeginForm("Index", "Admin", FormMethod.Post, new { @class = "form-login" }))
             {
                 @Html.AntiForgeryToken()
@@ -22,10 +22,10 @@
                 @Html.PasswordFor(m => m.Password, new { @type = "password", @placeholder = "Password", @class = "form-control input-sm chat-input", @id = "userPassword" })
                 @*<input type="text" id="userPassword" class="form-control input-sm chat-input" placeholder="password" />*@
                 <br>
-                <span class="text-size">Remember me</span>
-                @Html.CheckBoxFor(m => m.RememberMe)
+                @Html.CheckBoxFor(m => m.RememberMe, new { @id = "check-box-remember" })
+                <label class="text-size unselectable" for="check-box-remember">Remember me</label>
                 <br>
-                <button type="submit" class="btn login_btn text-light c-form-login text-size">Login</button>
+                <button type="submit" class="btn login_btn text-light c-form-login text-size bnt-login">Login</button>
             }
         </div>
     </div>
