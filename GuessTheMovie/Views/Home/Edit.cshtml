@@ -5,10 +5,7 @@
 }
 <div class="wrapper">
     <h2>Edit</h2>
-
-    @*@using (Html.BeginForm())*@
-
-    @using (Html.BeginForm("", "", FormMethod.Post, new { @class = "form-edit-film" }))
+    @using (Html.BeginForm("Edit", "Home", FormMethod.Post, new { @class = "form-edit-film" }))
     {
         @Html.AntiForgeryToken()
 
