@@ -93,9 +93,12 @@ namespace GuessTheMovie.Models.Admin
                       Image = f.Image,
                       Name = f.Name,
                       Year = f.Year,
+                      SimilarFilmsCode = f.SimilarFilmsCode,
                   }).FirstOrDefault();
 
                 data.FilmImages = data.Image.Split(';').ToList();
+
+                data.FilmImages.RemoveAt(data.FilmImages.Count() - 1);
             }
 
             return data;

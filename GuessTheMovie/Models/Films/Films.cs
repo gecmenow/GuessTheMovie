@@ -39,24 +39,26 @@ namespace GuessTheMovie.Models.Films
         {
             List<string> watchedList = new List<string>();
 
-            watchedList = watched.Split(';').ToList();
-
-            watchedList.RemoveAt(watchedList.Count - 1);
-
             FilmVM data = null;
 
-            while(data == null)
+            while (data == null)
                 data = await GetFirstRandomFilm();
 
-            while (true)
+            if (watched != null)
             {
-                if (!watchedList.Contains(data.FilmCode))
-                    break;
-                else
-                    while(data == null)
-                        data = await GetRandomFilm();                    
-            }
+                watchedList = watched.Split(';').ToList();
 
+                watchedList.RemoveAt(watchedList.Count - 1);
+
+                while (true)
+                {
+                    if (!watchedList.Contains(data.FilmCode))
+                        break;
+                    else
+                        data = await GetFirstRandomFilm();
+                }
+            }
+            
             List<FilmVM> films = await GetPool(data);
 
             foreach (var film in films)

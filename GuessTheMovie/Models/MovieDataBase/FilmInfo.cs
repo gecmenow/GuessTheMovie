@@ -67,7 +67,7 @@ namespace GuessTheMovie.Models.MovieDataBase
 
             string filmImage = "";
 
-            if(filmImages != null)
+            if (filmImages != null)
                 foreach (var image in filmImages.Backdrops)
                     filmImage += link + image.FilePath + ";";
                 //images.Add(link + image.FilePath);
