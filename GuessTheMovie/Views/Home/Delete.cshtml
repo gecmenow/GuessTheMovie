@@ -15,7 +15,28 @@
 </script>
 <div id="result">
     <table class="table film-table">
-
+        @foreach (var films in Model)
+        {
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => films.FilmCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => films.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => films.Year)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => films.Genre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => films.ImageCount)
+                </th>
+                <th></th>
+            </tr>
+            break;
+        }
         @if (Model.Count() != 0)
         {
             foreach (var item in Model)
