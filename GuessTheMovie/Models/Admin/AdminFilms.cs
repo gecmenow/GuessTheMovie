@@ -161,6 +161,18 @@ namespace GuessTheMovie.Models.Admin
             return flag;
         }
 
+        public static void DeleteFilm(int id)
+        {
+            using (DataBaseContext db = new DataBaseContext())
+            {
+                var data = db.FilmsDB.Where(f => f.Id == id).FirstOrDefault();
+
+                db.FilmsDB.Remove(data);
+
+                db.SaveChanges();
+            }
+        }
+
         public static void ClearDataBase()
         {
             using (DataBaseContext db = new DataBaseContext())

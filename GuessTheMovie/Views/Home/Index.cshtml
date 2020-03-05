@@ -1,17 +1,28 @@
 ﻿@model PagedList.IPagedList<GuessTheMovie.Models.ViewModels.AdminFilmsVM>
 @using PagedList.Mvc;
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".RemoveLink").click(function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-id");
+            var page = $(this).attr("data-page");
+            url = "@Url.Action("Delete", "Home")?id=" + id + "&page=" + page;
+            $('#result').load(url);
+        });
+    })
+</script>
+
 @{
     ViewBag.Title = "Index";
 }
-
-    <div class="wrapper">
-        <h2>Index</h2>
-
-        <p class="film-new btn btn-updat-films-dtb">
-            @Html.ActionLink("Update DataBase", "Update")
-        </p>
-
+<div class="wrapper">
+    <h2>Index</h2>
+    <p class="film-new btn btn-updat-films-dtb">
+        @Html.ActionLink("Update DataBase", "Update")
+    </p>
+    <div id="result">
         <table class="table film-table">
             @foreach (var films in Model)
             {
@@ -56,12 +67,16 @@
                             @Html.DisplayFor(modelItem => item.ImageCount)
                         </th>
                         <th>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.FilmId}, new {@class = "bnt btn-edit"}) |  
-                            @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */ }, new {@class = "bnt btn-delete"})
+                            @Html.ActionLink("Edit", "Edit", new { id = item.FilmId }, new { @class = "bnt btn-edit" }) |
+                            <button type="button" class="btn btn-danger RemoveLink" data-id="@item.FilmId" data-page="@Model.PageNumber"><i class="fas fa-trash-alt"></i></button>
                         </th>
                     </tr>
                 }
             }
         </table>
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
     </div>
+</div>
+
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+

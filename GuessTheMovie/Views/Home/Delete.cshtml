@@ -1,0 +1,47 @@
+﻿@model PagedList.IPagedList<GuessTheMovie.Models.ViewModels.AdminFilmsVM>
+@using PagedList.Mvc;
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".RemoveLink").click(function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-id");
+            var page = $(this).attr("data-page");
+            url = "@Url.Action("Delete", "Home")?id=" + id + "&page=" + page;
+            $('#result').load(url);
+        });
+    })
+</script>
+<div id="result">
+    <table class="table film-table">
+
+        @if (Model.Count() != 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <th>
+                        @Html.DisplayFor(modelItem => item.FilmCode)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(modelItem => item.Year)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(modelItem => item.Genre)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(modelItem => item.ImageCount)
+                    </th>
+                    <th>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.FilmId }, new { @class = "bnt btn-edit" }) |
+                        <button type="button" class="btn btn-danger RemoveLink" data-id="@item.FilmId"><i class="fas fa-trash-alt"></i></button>
+                    </th>
+                </tr>
+            }
+        }
+    </table>
+</div>
