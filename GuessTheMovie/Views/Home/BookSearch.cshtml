@@ -1,38 +1,4 @@
-﻿@model PagedList.IPagedList<GuessTheMovie.Models.ViewModels.AdminFilmsVM>
-@using PagedList.Mvc;
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $(".RemoveLink").click(function (e) {
-            e.preventDefault();
-            var id = $(this).attr("data-id");
-            var page = $(this).attr("data-page");
-            url = "@Url.Action("Delete", "Home")?id=" + id + "&page=" + page;
-            $('#result').load(url);
-        });
-
-        $('#submit').click(function (e) {
-            e.preventDefault();
-            var name = $('#search').val();
-            name = encodeURIComponent(name);
-            url = "@Url.Action("FilmSearch", "Home")?name=" + name ;
-            $('#result').load(url);
-        });
-    })
-</script>
-
-@{
-    ViewBag.Title = "Index";
-}
-<div class="wrapper">
-    <h2>Index</h2>
-    <p class="film-new btn btn-updat-films-dtb">
-        @Html.ActionLink("Update DataBase", "Update")
-    </p>
-    <br />
-    <input type="text" name="name" id="search" />
-    <input type='button' id="submit" value='Поиск' />
+﻿@model List<GuessTheMovie.Models.ViewModels.AdminFilmsVM>
 
     <div id="result">
         <table class="table film-table">
@@ -86,15 +52,10 @@
                         </th>
                         <th>
                             @Html.ActionLink("Edit", "Edit", new { id = item.FilmId }, new { @class = "bnt btn-edit" }) |
-                            <button type="button" class="btn btn-danger RemoveLink" data-id="@item.FilmId" data-page="@Model.PageNumber"><i class="fas fa-trash-alt"></i></button>
+                            <button type="button" class="btn btn-danger RemoveLink" data-id="@item.FilmId"><i class="fas fa-trash-alt"></i></button>
                         </th>
                     </tr>
                 }
             }
         </table>
     </div>
-</div>
-
-
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
-

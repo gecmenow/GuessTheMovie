@@ -8,62 +8,32 @@ using System.Web;
 
 namespace GuessTheMovie.Models.MovieDataBase
 {
-    public partial class FilmImagesVM
+    public class Backdrop
     {
-        [JsonProperty("id")]
-        public long Id { get; set; }
-
-        [JsonProperty("backdrops")]
-        public Backdrop[] Backdrops { get; set; }
-
-        [JsonProperty("posters")]
-        public Backdrop[] Posters { get; set; }
+        public double aspect_ratio { get; set; }
+        public string file_path { get; set; }
+        public int height { get; set; }
+        public string iso_639_1 { get; set; }
+        public double vote_average { get; set; }
+        public int vote_count { get; set; }
+        public int width { get; set; }
     }
 
-    public partial class Backdrop
+    public class Poster
     {
-        [JsonProperty("aspect_ratio")]
-        public double AspectRatio { get; set; }
-
-        [JsonProperty("file_path")]
-        public string FilePath { get; set; }
-
-        [JsonProperty("height")]
-        public long Height { get; set; }
-
-        [JsonProperty("iso_639_1")]
-        public string Iso639_1 { get; set; }
-
-        [JsonProperty("vote_average")]
-        public double VoteAverage { get; set; }
-
-        [JsonProperty("vote_count")]
-        public long VoteCount { get; set; }
-
-        [JsonProperty("width")]
-        public long Width { get; set; }
+        public double aspect_ratio { get; set; }
+        public string file_path { get; set; }
+        public int height { get; set; }
+        public string iso_639_1 { get; set; }
+        public double vote_average { get; set; }
+        public int vote_count { get; set; }
+        public int width { get; set; }
     }
 
-    public partial class FilmImagesVM
+    public class FilmImagesVM
     {
-        public static FilmImagesVM FromJson(string json) => JsonConvert.DeserializeObject<FilmImagesVM>(json, ConverterImages.Settings);
-    }
-
-    public static class SerializeImages
-    {
-        public static string ToJson(this FilmImagesVM self) => JsonConvert.SerializeObject(self, ConverterImages.Settings);
-    }
-
-    internal static class ConverterImages
-    {
-        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
-        {
-            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-            DateParseHandling = DateParseHandling.None,
-            Converters =
-        {
-            new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
-        },
-        };
+        public int id { get; set; }
+        public List<Backdrop> backdrops { get; set; }
+        public List<Poster> posters { get; set; }
     }
 }

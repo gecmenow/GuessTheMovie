@@ -23,29 +23,29 @@ namespace GuessTheMovie.Models.Admin
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
-            int page = 15;
+            int page = 117;
 
             while (page != maxPage)
             {
                 var response = await client.GetStringAsync("https://api.themoviedb.org/3/movie/popular?api_key=" + key + "&language=ru-RU&page=" + page.ToString());
 
-                TmdBv1 tmdbV1 = TmdBv1.FromJson(response);
+                TmdBv1 root = Newtonsoft.Json.JsonConvert.DeserializeObject<TmdBv1>(response);
 
                 List<string> images = new List<string>();
 
                 using (DataBaseContext db = new DataBaseContext())
                 {
-                    foreach (var film in tmdbV1.Results)
+                    foreach (var film in root.results)
                     {
                         FilmsDB data = new FilmsDB();
 
-                        data.FilmCode = film.Id.ToString();
+                        data.FilmCode = film.id.ToString();
 
                         var filmId = db.FilmsDB.Select(f => f.FilmCode).ToList();
 
                         if (!filmId.Contains(data.FilmCode))
                         {
-                            data.Name = film.Title;
+                            data.Name = film.title;
 
                             data.Image = await FilmInfo.GetFilmImages(data.FilmCode);
 
@@ -62,7 +62,7 @@ namespace GuessTheMovie.Models.Admin
                             if (data.Genre == null)
                                 continue;
 
-                            data.Year = film.ReleaseDate.Year;
+                            data.Year = Convert.ToInt32(film.release_date.Split('-').First().ToString());
 
                             db.FilmsDB.Add(data);
 
@@ -74,7 +74,7 @@ namespace GuessTheMovie.Models.Admin
 
                     page++;
 
-                    maxPage = Convert.ToInt32(tmdbV1.TotalPages / 10);
+                    //maxPage = Convert.ToInt32(tmdbV1.TotalPages / 10);
                 }
             }
         }
@@ -159,6 +159,28 @@ namespace GuessTheMovie.Models.Admin
             }
 
             return flag;
+        }
+
+        public static List<AdminFilmsVM> FindFilm(string name)
+        {
+            List<AdminFilmsVM> data = new List<AdminFilmsVM>();
+
+            using (DataBaseContext db = new DataBaseContext())
+            {
+                data = db.FilmsDB.Where(a => a.Name.Contains(name)).Select(f => new AdminFilmsVM {
+                    FilmId = f.Id,
+                    FilmCode = f.FilmCode,
+                    Genre = f.Genre,
+                    Image = f.Image,
+                    Name = f.Name,
+                    Year = f.Year,
+                }).ToList();
+
+                foreach (var film in data)
+                    film.ImageCount = film.Image.Split(';').Count();
+            }
+
+            return data;
         }
 
         public static void DeleteFilm(int id)

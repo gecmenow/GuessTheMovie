@@ -18,26 +18,35 @@ namespace GuessTheMovie.Models.MovieDataBase
 
             HttpClient client = new HttpClient();
 
-            var response = await client.GetStringAsync("https://api.themoviedb.org/3/movie/"+ filmCode + "?api_key=7bf0ddbd0b708dd904d550607793fa52&language=ru-RU");
+            string url = "https://api.themoviedb.org/3/movie/" + filmCode + "?api_key=7bf0ddbd0b708dd904d550607793fa52&language=ru-RU";
+
+            HttpResponseMessage responseRequest = await client.GetAsync(url);
 
             FilmGenresVM filmGenres = null;
 
-            try
+            string filmGenre = "";
+
+            if (responseRequest.IsSuccessStatusCode)
             {
-                filmGenres = FilmGenresVM.FromJson(response);
+                var response = await client.GetStringAsync(url);
+
+                try
+                {
+                    filmGenres = Newtonsoft.Json.JsonConvert.DeserializeObject<FilmGenresVM>(response);
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                List<string> genres = new List<string>();
+
+                if (filmGenres != null)
+                    foreach (var genre in filmGenres.genres)
+                        filmGenre += genre + ";";
+
+                //filmGenre = genres.FirstOrDefault();
             }
-            catch(Exception e)
-            {
-
-            }
-
-            List<string> genres = new List<string>();
-
-            if (filmGenres != null)
-                foreach (var genre in filmGenres.Genres)
-                    genres.Add(genre.Name);
-
-            string filmGenre = genres.FirstOrDefault();
 
             return filmGenre;
         }
@@ -48,29 +57,37 @@ namespace GuessTheMovie.Models.MovieDataBase
 
             HttpClient client = new HttpClient();
 
-            var response = await client.GetStringAsync("https://api.themoviedb.org/3/movie/" + filmCode + "/images?api_key=7bf0ddbd0b708dd904d550607793fa52");
+            string url = "https://api.themoviedb.org/3/movie/" + filmCode + "/images?api_key=7bf0ddbd0b708dd904d550607793fa52";
 
-            FilmImagesVM filmImages = null;
-
-            try
-            {
-                filmImages = FilmImagesVM.FromJson(response);
-            }
-            catch (Exception e)
-            {
-
-            }
-
-            List<string> images = new List<string>();
-
-            string link = "https://image.tmdb.org/t/p/original";
+            HttpResponseMessage responseRequest = await client.GetAsync(url);
 
             string filmImage = "";
 
-            if (filmImages != null)
-                foreach (var image in filmImages.Backdrops)
-                    filmImage += link + image.FilePath + ";";
+            if (responseRequest.IsSuccessStatusCode)
+            {
+                var response = await client.GetStringAsync(url);
+
+                FilmImagesVM filmImages = null;
+
+                try
+                {
+                    //filmImages = FilmImagesVM.FromJson(response);
+                    filmImages = Newtonsoft.Json.JsonConvert.DeserializeObject<FilmImagesVM>(response);
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                List<string> images = new List<string>();
+
+                string link = "https://image.tmdb.org/t/p/original";
+
+                if (filmImages != null)
+                    foreach (var image in filmImages.backdrops)
+                        filmImage += link + image.file_path + ";";
                 //images.Add(link + image.FilePath);
+            }
 
             return filmImage;
         }
@@ -81,25 +98,33 @@ namespace GuessTheMovie.Models.MovieDataBase
 
             HttpClient client = new HttpClient();
 
-            var response = await client.GetStringAsync("https://api.themoviedb.org/3/movie/" + filmCode + "/similar?api_key=7bf0ddbd0b708dd904d550607793fa52&language=ru-RU");
+            string url = "https://api.themoviedb.org/3/movie/" + filmCode + "/similar?api_key=7bf0ddbd0b708dd904d550607793fa52&language=ru-RU";
 
-            List<Result> similar = null;
-
-            try 
-            {
-                similar = FilmSimilarVM.FromJson(response).SimResults.ToList();
-            }
-            catch(Exception e)
-            { }
+            HttpResponseMessage responseRequest = await client.GetAsync(url);
 
             string similarFilms = null;
 
-            if(similar != null)
-                if (similar.Count() >= 4)
+            if (responseRequest.IsSuccessStatusCode)
+            {
+                var response = await client.GetStringAsync(url);
+
+                FilmSimilarVM similar = null;
+                try
                 {
-                    foreach (var film in similar)
-                        similarFilms += film.Id.ToString() + ";";
+                    similar = Newtonsoft.Json.JsonConvert.DeserializeObject<FilmSimilarVM>(response);
                 }
+                catch (Exception e)
+                { }
+
+                if (similar != null)
+                {
+                    if (similar.results.Count() >= 4)
+                    {
+                        foreach (var film in similar.results)
+                            similarFilms += film.id.ToString() + ";";
+                    }
+                }
+            }
 
             return similarFilms;
         }

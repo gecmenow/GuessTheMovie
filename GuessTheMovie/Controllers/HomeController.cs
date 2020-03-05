@@ -75,5 +75,29 @@ namespace GuessTheMovie.Controllers
 
             return PartialView(data.ToPagedList(pageNumber, pageSize));
         }
+
+        public ActionResult DeleteSerached(int id, string name)
+        {
+            AdminFilms.DeleteFilm(id);
+
+            var data = AdminFilms.FindFilm(name);
+
+            if (data.Count <= 0)
+            {
+                return HttpNotFound();
+            }
+            return PartialView("FilmSearch", data);
+        }
+
+        public ActionResult FilmSearch(string name)
+        {
+            var data = AdminFilms.FindFilm(name);
+
+            if (data.Count <= 0)
+            {
+                return HttpNotFound();
+            }
+            return PartialView(data);
+        }
     }
 }

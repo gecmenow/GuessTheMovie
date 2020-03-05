@@ -1,5 +1,4 @@
-﻿@model PagedList.IPagedList<GuessTheMovie.Models.ViewModels.AdminFilmsVM>
-@using PagedList.Mvc;
+﻿@model List<GuessTheMovie.Models.ViewModels.AdminFilmsVM>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
@@ -7,8 +6,9 @@
         $(".RemoveLink").click(function (e) {
             e.preventDefault();
             var id = $(this).attr("data-id");
-            var page = $(this).attr("data-page");
-            url = "@Url.Action("Delete", "Home")?id=" + id + "&page=" + page;
+            var name = $('#search').val();
+            name = encodeURIComponent(name);
+            url = "@Url.Action("DeleteSerached", "Home")?id=" + id + "&name=" + name;
             $('#result').load(url);
         });
 
@@ -27,6 +27,9 @@
         @foreach (var films in Model)
         {
             <tr>
+                <th>
+                    @Html.DisplayNameFor(model => films.FilmId)
+                </th>
                 <th>
                     @Html.DisplayNameFor(model => films.FilmCode)
                 </th>
@@ -52,6 +55,9 @@
             {
                 <tr>
                     <th>
+                        @Html.DisplayFor(modelItem => item.FilmId)
+                    </th>
+                    <th>
                         @Html.DisplayFor(modelItem => item.FilmCode)
                     </th>
                     <th>
@@ -75,3 +81,4 @@
         }
     </table>
 </div>
+
