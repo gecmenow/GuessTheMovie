@@ -99,5 +99,12 @@ namespace GuessTheMovie.Controllers
             }
             return PartialView(data);
         }
+
+        public ActionResult AutocompleteSearch(string term)
+        {
+            var data = AdminFilms.AutoCompleteFindFilm(term);
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
     }
 }

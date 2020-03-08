@@ -183,6 +183,19 @@ namespace GuessTheMovie.Models.Admin
             return data;
         }
 
+        public static List<String> AutoCompleteFindFilm(string name)
+        {
+            List<String> data = new List<String>();
+
+            using (DataBaseContext db = new DataBaseContext())
+            {
+                data = db.FilmsDB.Where(a => a.Name.Contains(name)).Select(a => a.Name )
+                            .Distinct().Take(5).ToList();
+            }
+
+            return data;
+        }
+
         public static void DeleteFilm(int id)
         {
             using (DataBaseContext db = new DataBaseContext())
