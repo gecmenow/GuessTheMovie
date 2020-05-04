@@ -1,4 +1,5 @@
-﻿using GuessTheMovie.Models.Films;
+﻿using GuessTheMovie.Cors;
+using GuessTheMovie.Models.Films;
 using GuessTheMovie.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,30 +16,26 @@ namespace GuessTheMovie.Controllers
 {
     public class FilmsController : ApiController
     {
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
-        public async Task<IEnumerable<FilmVM>> Get()
+        public async Task<IEnumerable<FilmVM>> Get(string years, string genres)
         {
+            if (years == "null")
+                years = null;
+            if (genres == "null")
+                genres = null;
             //async
-            var data = await Films.GetFilms();   
+            var data = await Films.GetFilms(years, genres);
 
             return data;
         }
 
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
-        public async Task<IEnumerable<FilmVM>> Get(string id)
+        public async Task<IEnumerable<FilmVM>> Get(string id, string years, string genres)
         {
-            //List<int> temp = new List<int>();
-
-            //temp.Add(r.Next());
-
-            //List<int> temp1 = new List<int>()
-            //    temp1 = await (List<int>)HttpContext.Current.Session["name"];
-
-            //HttpContext.Current.Session["name"] = temp;
-
+            if (years == "null")
+                years = null;
+            if (genres == "null")
+                genres = null;
             //async
-            var data = await Films.GetFilms(id);
-            //var data = db.FilmsDB.ToListAsync();      
+            var data = await Films.GetFilms(id, years, genres);
 
             return data;
         }

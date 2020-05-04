@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace GuessTheMovie
 {
@@ -13,7 +14,9 @@ namespace GuessTheMovie
             // Конфигурация и службы веб-API
 
             // Добавляем поддержку CORS
-            config.EnableCors();
+            var cors = new EnableCorsAttribute(origins: "*", headers: "API-KEY", methods: "*");
+
+            config.EnableCors(cors);
 
             // Маршруты веб-API
             config.MapHttpAttributeRoutes();
@@ -23,6 +26,27 @@ namespace GuessTheMovie
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Routes.MapHttpRoute(
+               name: "FilteredFilm",
+               routeTemplate: "api/{controller}/{years}/{genres}",
+               defaults: new
+               {
+                   years = RouteParameter.Optional,
+                   genres = RouteParameter.Optional,
+               }
+            );
+
+            config.Routes.MapHttpRoute(
+               name: "FilteredFilms",
+               routeTemplate: "api/{controller}/{id}/{years}/{genres}",
+               defaults: new
+               {
+                   id = RouteParameter.Optional,
+                   years = RouteParameter.Optional,
+                   genres = RouteParameter.Optional,
+               }
+           );
 
             config.Formatters.Remove(config.Formatters.XmlFormatter);
 

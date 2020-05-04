@@ -299,6 +299,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hashing\Hash.cs" />
+    <Compile Include="MessageHandler\ApiKeyMessageHandler.cs" />
     <Compile Include="Migrations\202002072100444_added db.cs" />
     <Compile Include="Migrations\202002072100444_added db.designer.cs">
       <DependentUpon>202002072100444_added db.cs</DependentUpon>
@@ -326,7 +327,8 @@
     <Compile Include="Models\DataBase\DataBaseContext.cs" />
     <Compile Include="Models\DataBase\FilmsDB.cs" />
     <Compile Include="Models\Films\Films.cs" />
-    <Compile Include="Models\Films\SortFilms.cs" />
+    <Compile Include="Models\Films\FilmsPool.cs" />
+    <Compile Include="Models\Films\RandomFilms.cs" />
     <Compile Include="Models\MovieDataBase\FilmGenresVM.cs" />
     <Compile Include="Models\MovieDataBase\FilmImagesVM.cs" />
     <Compile Include="Models\MovieDataBase\FilmInfo.cs" />
