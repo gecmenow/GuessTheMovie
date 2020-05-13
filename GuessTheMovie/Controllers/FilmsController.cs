@@ -16,7 +16,7 @@ namespace GuessTheMovie.Controllers
 {
     public class FilmsController : ApiController
     {
-        public async Task<IEnumerable<FilmVM>> Get(string years, string genres)
+        public async Task<IEnumerable<FilmVM>> Get(string years, string genres, string type)
         {
             if (years == "null")
                 years = null;
@@ -28,7 +28,7 @@ namespace GuessTheMovie.Controllers
             return data;
         }
 
-        public async Task<IEnumerable<FilmVM>> Get(string id, string years, string genres)
+        public async Task<IEnumerable<FilmVM>> Get(string id, string years, string genres, string type)
         {
             if (years == "null")
                 years = null;
